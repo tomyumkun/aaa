@@ -202,23 +202,20 @@ async function fetchGeminiQuestion() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ questionType: "脳トレ" })
     });
+
     const raw = await res.json();
     const data = typeof raw.body === "string" ? JSON.parse(raw.body) : raw;
 
-    // const data = await res.json();
-    // console.log("APIレスポンス:", data);
-
-    // ✅ Lambda形式
     if (!data.question) {
-      console.error("⚠️ Lambdaレスポンス不正", data);
+      console.error("Lambdaレスポンス不正", data);
       return;
     }
 
-    questionText = data.question;
-    questionDiv.innerText = questionText;
-
-    // 必要なら選択肢保存
     store.currentQuiz = data;
+
+    questionDiv.innerText =
+      data.question + "\n" +
+      data.choices.map((c,i)=>`${i+1}. ${c}`).join(" ");
 
   } catch (e) {
     console.error("Gemini取得失敗", e);
@@ -833,6 +830,7 @@ async function fetchGeminiQuestion() {
 
 
 </body></html>
+
 
 
 
