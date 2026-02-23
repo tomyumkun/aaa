@@ -824,12 +824,16 @@ async function fetchGeminiQuestion() {
 
 
 
-    init();
+    //init();
+    window.addEventListener("load", async () => {
+      await generateQuestion();
+    });
   </script>
 
 
 
 </body></html>
+
 
 
 
