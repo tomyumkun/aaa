@@ -535,18 +535,18 @@ async function fetchGeminiQuestion() {
 
     // クイズ出題関数
     async function generateQuestion(isFast = false) {
-  questionWait = true;
-
-  const difficulty = localStorage.getItem('difficulty');
-  const questionType = localStorage.getItem('questionType');
-  console.log(questionType);
-  // ✅ Gemini問題
-  if (questionType === "脳トレ") {
-    await fetchGeminiQuestion();
-    questionCount++;
-    questionWait = false;
-    return;
-  }
+      questionWait = true;
+    
+      const difficulty = localStorage.getItem('difficulty');
+      const questionType = localStorage.getItem('questionType');
+      console.log(questionType);
+      // ✅ Gemini問題
+      if (questionType === "脳トレ") {
+        await fetchGeminiQuestion();
+        questionCount++;
+        questionWait = false;
+        return;
+      }
 
   // 計算問題
   if (questionType == "calc1") {
@@ -831,6 +831,7 @@ async function fetchGeminiQuestion() {
 
 
 </body></html>
+
 
 
 
