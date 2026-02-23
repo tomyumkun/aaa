@@ -539,7 +539,7 @@ async function fetchGeminiQuestion() {
 
   const difficulty = localStorage.getItem('difficulty');
   const questionType = localStorage.getItem('questionType');
-
+  console.log(questionType);
   // ✅ Gemini問題
   if (questionType === "脳トレ") {
     await fetchGeminiQuestion();
@@ -831,6 +831,7 @@ async function fetchGeminiQuestion() {
 
 
 </body></html>
+
 
 
 
