@@ -197,60 +197,29 @@
 
 async function fetchGeminiQuestion() {
   try {
-    // fetch 実行
     const res = await fetch("https://nlkabje6na.execute-api.ap-southeast-2.amazonaws.com", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      // Lambdaに渡すデータ
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ questionType: "脳トレ" })
     });
-
-    // レスポンスがOKでない場合はエラー
-    if (!res.ok) {
-      console.error("APIリクエスト失敗:", res.status, res.statusText);
-      return;
-    }
 
     const data = await res.json();
     console.log("APIレスポンス:", data);
 
-    // candidatesやtextが存在するかチェック
-    const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!raw) {
-      console.warn("⚠️ Geminiのレスポンスが想定外です。モックデータを使用します");
-      
-      // モックデータで動作確認
-      const mockData = {
-        question: "1 + 2 = ?",
-        choices: ["1","2","3"],
-        correctIndex: 2
-      };
-      questionDiv.innerText = mockData.question;
+    // ✅ Lambda形式
+    if (!data.question) {
+      console.error("⚠️ Lambdaレスポンス不正", data);
       return;
     }
 
-    // ```json や ``` を除去
-    const cleaned = raw.replace(/```json|```/g, "").trim();
+    questionText = data.question;
+    questionDiv.innerText = questionText;
 
-    // JSON化
-    const quiz = JSON.parse(cleaned);
-
-    // 画面に表示
-    questionDiv.innerText = quiz.question;
-    console.log("Geminiクイズ取得成功:", quiz);
+    // 必要なら選択肢保存
+    store.currentQuiz = data;
 
   } catch (e) {
-    console.error("Gemini取得失敗:", e);
-
-    // モックデータ fallback
-    const mockData = {
-      question: "1 + 2 = ?",
-      choices: ["1","2","3"],
-      correctIndex: 2
-    };
-    questionDiv.innerText = mockData.question;
+    console.error("Gemini取得失敗", e);
   }
 }
 //脳トレ出題関数(終わり)
@@ -866,3 +835,4 @@ async function fetchGeminiQuestion() {
 
 
 </body></html>
+
