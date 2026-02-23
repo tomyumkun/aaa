@@ -540,7 +540,7 @@ async function fetchGeminiQuestion() {
         const difficulty = localStorage.getItem('difficulty');
         const questionType = localStorage.getItem('questionType');
 
-        if (questionType === "brain") {
+        if (questionType === "脳トレ") {
           fetchGeminiQuestion();
           questionCount++;
           questionWait = false;
@@ -835,4 +835,5 @@ async function fetchGeminiQuestion() {
 
 
 </body></html>
+
 
