@@ -409,6 +409,8 @@ async function fetchGeminiQuestion() {
                 questionDiv.innerText = `${a} + ${b} =`;
               }else if(questionType == "calc2"){
                 questionDiv.innerText = `${a} × ${b} =`;
+              }else if(questionType == "脳トレ"){
+                questionDiv.innerText = questionText;
               }
             }
           } else {
@@ -833,6 +835,7 @@ async function fetchGeminiQuestion() {
 
 
 </body></html>
+
 
 
 
