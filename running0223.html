@@ -195,46 +195,33 @@
 
 //脳トレ出題関数
 
-      async function fetchGeminiQuestion() {
-        try {
-          const res = await fetch("https://nlkabje6na.execute-api.ap-southeast-2.amazonaws.com", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              questionType: "脳トレ"
-            })
-          });
+async function fetchGeminiQuestion() {
+  try {
+    const res = await fetch("https://nlkabje6na.execute-api.ap-southeast-2.amazonaws.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ questionType: "脳トレ" })
+    });
 
-          const data = await res.json();
+    const data = await res.json();
+    console.log("APIレスポンス:", data); // ← ここを追加
 
-           // Gemini生テキスト
-          const raw = data.candidates[0].content.parts[0].text;
+    if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
+      console.error("⚠️ Geminiのレスポンス形式が想定外です", data);
+      return;
+    }
 
-          // ```json と ``` を除去
-          const cleaned = raw.replace(/```json|```/g, "").trim();
+    const raw = data.candidates[0].content.parts[0].text;
+    const cleaned = raw.replace(/```json|```/g, "").trim();
+    const quiz = JSON.parse(cleaned);
 
-          // JSON化
-          const quiz = JSON.parse(cleaned);
+    question = quiz.question;
+    questionDiv.innerText = question;
 
-          console.log("quiz" +  quiz);
-
-          // ←ここがフロントで使う変数名
-          question = quiz.question;
-          const choices = quiz.choices;
-          const correctIndex = quiz.correctIndex;
-
-          questionDiv.innerText = question;
-
-          console.log("Gemini:", data);
-
-          // ← Lambdaの返却形式に合わせて修正
-
-        } catch (e) {
-          console.error("Gemini取得失敗", e);
-        }
-      }
+  } catch (e) {
+    console.error("Gemini取得失敗", e);
+  }
+}
 //脳トレ出題関数(終わり)
 
 
