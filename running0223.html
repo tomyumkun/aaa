@@ -202,9 +202,11 @@ async function fetchGeminiQuestion() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ questionType: "脳トレ" })
     });
+    const raw = await res.json();
+    const data = typeof raw.body === "string" ? JSON.parse(raw.body) : raw;
 
-    const data = await res.json();
-    console.log("APIレスポンス:", data);
+    // const data = await res.json();
+    // console.log("APIレスポンス:", data);
 
     // ✅ Lambda形式
     if (!data.question) {
@@ -831,6 +833,7 @@ async function fetchGeminiQuestion() {
 
 
 </body></html>
+
 
 
 
